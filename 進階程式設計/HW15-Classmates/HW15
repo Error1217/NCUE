@@ -1,0 +1,49 @@
+#include <iostream>
+
+using namespace std;
+
+int P (int f[], int v){
+    if (f[v]==v) {
+        return v;
+    }
+    else{
+        f[v] = P(f, f[v]);
+        return f[v];
+    }
+}
+
+void M (int f[], int v, int u){
+    int tmp = P(f, v);
+    int tmp1 = P(f, u);
+    if (tmp!=tmp1) {
+        f[tmp1] = tmp;
+    }
+    
+}
+
+
+int main(int argc, const char * argv[]) {
+    int _student;
+    int _class;
+    int L, R;
+    int people[5000];
+    while (cin>>_student>>_class) {
+        for (int i=0; i<_student; i++) {
+            people[i] = i;
+        }
+        for (int i=0; i<_class; i++) {
+            cin>>L>>R;
+            M(people, L, R);
+        }
+        int count=0;
+        for (int i=0; i<_student; i++) {
+//            cout<<people[i]<<" ";
+            if (people[i]==i) {
+                count++;
+            }
+        }
+//        cout<<endl;
+        cout<<count<<endl;
+    }
+        return 0;
+}
