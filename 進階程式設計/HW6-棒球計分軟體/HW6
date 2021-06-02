@@ -1,0 +1,167 @@
+#include<iostream> 
+#include<string.h>
+
+using namespace std;
+
+class Player
+{	
+private:
+	int count;
+	string info[20];
+public:
+	Player();
+	void setinfo(string _info);
+	string getinfo(int _c);
+};
+
+Player::Player()
+{
+	count=0;
+}
+
+void Player::setinfo(string _info)
+{
+	info[count] = _info;
+		count++;
+}
+
+string Player::getinfo(int _c)
+{
+	return info[_c];
+}
+
+Player player[9];
+
+class Game
+{
+private:
+	int score;
+	int out;
+	bool base[3];
+public:	
+	Game();
+	int play(int num);
+};
+
+Game::Game()
+{
+	this->score = 0;
+	this->out = 0;
+	base[0] = false;
+	base[1] = false;
+	base[2] = false;
+}
+
+int Game::play(int num)
+{
+	int col=0;
+	while(col<9)
+	{
+		for(int row=0;row<9;row++)
+		{
+			string temp = player[row].getinfo(col);	
+			if(temp=="SO"||temp=="FO"||temp=="GO")
+			{
+				this->out++;
+				if((this->out)%3==0)
+				{
+					this->base[0]=false;
+					this->base[1]=false;
+					this->base[2]=false;
+				}
+				if(num==this->out)
+					return this->score;
+			}
+						
+			if(temp=="1B")
+			{
+				if(this->base[2]==true)
+				{
+					this->score++;
+					this->base[2]=false;
+				}	
+				this->base[2]=this->base[1];
+				this->base[1]=this->base[0];
+				this->base[0] = true;
+			}
+			else if(temp=="2B")
+			{
+				if(this->base[2]==true)
+				{
+					this->base[2]=false;
+					this->score++;
+				}
+					
+				if(this->base[1]==true)
+				{
+					this->base[1]=false;
+					this->score++;
+				}
+				this->base[2]=this->base[0];
+				this->base[0] = false;
+				this->base[1] = true;
+			}
+			else if(temp=="3B")
+			{
+				if(this->base[2]==true)
+				{
+					this->base[2]=false;
+					this->score++;
+				}
+				if(this->base[1]==true)
+				{
+					this->base[1]=false;
+					this->score++;
+				}
+				if(this->base[0]==true)
+				{
+					this->base[0]=false;
+					this->score++;
+				}
+				this->base[2] = true;
+			}
+			else if(temp=="HR")
+			{
+				this->score++;
+				if(this->base[2]==true)
+				{
+					this->base[2]=false;
+					this->score++;
+				}
+				if(this->base[1]==true)
+				{
+					this->base[1]=false;
+					this->score++;
+				}
+				if(this->base[0]==true)
+				{
+					this->base[0]=false;
+					this->score++;
+				}
+			}
+		}
+		col++;
+	}
+	
+	
+}
+
+int main()
+{
+	Game game;
+	int c,n, score;
+	string info;
+	for(int row=0;row<9;row++)
+	{
+		cin>>c;
+		for(int col=0;col<c;col++)
+		{
+			cin>>info;
+			player[row].setinfo(info);
+		}	
+	}
+	cin>>n;
+	score = game.play(n);
+	cout<<score<<endl;
+
+}
