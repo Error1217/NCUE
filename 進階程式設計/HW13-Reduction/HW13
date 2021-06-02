@@ -1,0 +1,90 @@
+#include<iostream>
+
+using namespace std;
+
+struct Row{
+    int col[100];
+};
+
+struct Matrix{
+    Row row[100];
+    int tmp[100];
+};
+
+int MAX(Matrix matrix, int row, int col){
+    int max = 0;
+    for (int index=0, a=row+1; index<col-row-1; index++, a++) {
+        int tmp = matrix.row[row].col[a] + matrix.row[a].col[col] + matrix.tmp[row] * matrix.tmp[a] * matrix.tmp[col];
+        if (tmp>max) {
+            max = tmp;
+        }
+    }
+    return max;
+}
+
+int MIN(Matrix matrix, int row, int col){
+    int min = 1000000;
+    for (int index=0, a=row+1; index<col-row-1; index++, a++) {
+        int tmp = matrix.row[row].col[a] + matrix.row[a].col[col] + matrix.tmp[row] * matrix.tmp[a] * matrix.tmp[col];
+        if (tmp<min) {
+            min = tmp;
+        }
+    }
+    return min;
+}
+
+Matrix MAXorMIN(Matrix matrix, int m, char sel){
+    int size=4;
+    while (size<=m) {
+        for (int row=0; row<m-2; row++) {
+            for (int col=row+size-1; col<m; col++) {
+                if (col<size+row) {
+                    if (sel=='U') {
+                        matrix.row[row].col[col] = MAX(matrix, row, col);
+                    }
+                    else if (sel=='D'){
+                            matrix.row[row].col[col] = MIN(matrix, row, col);
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        size++;
+    }
+    return matrix;
+}
+
+
+int main (){
+    int n, m, max=0, min=0;
+    Matrix matrix;
+    cin>>n;
+    for (int index=0; index<n; index++) {
+        cin>>m;
+        for (int j=0; j<m; j++) {
+            cin>>matrix.tmp[j];
+        }
+        for (int row=0; row<m; row++) {
+            for (int col=0; col<m; col++) {
+                if (col<row+2) {
+                    matrix.row[row].col[col] = 0;
+                }
+                else if(col<row+3){
+                    matrix.row[row].col[col] = matrix.tmp[row]*matrix.tmp[row+1]*matrix.tmp[row+2];
+                }
+                else{
+                    break;
+                }
+            }
+        }
+        matrix = MAXorMIN(matrix, m, 'U');
+        max = matrix.row[0].col[m-1];
+        matrix = MAXorMIN(matrix, m, 'D');
+        min = matrix.row[0].col[m-1];
+        cout<<max<<" "<<min<<endl;
+    }
+    
+    
+}
