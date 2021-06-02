@@ -1,0 +1,80 @@
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, const char * argv[]) {
+    int N=0, M=0;
+    while(cin>>N>>M){
+    	int P[M][N], S[N][M];
+	    //放值
+	    for (int n=0; n<N; n++) {
+	        for (int m=0; m<M; m++) {
+	            cin>>S[n][m];
+	        }
+	    }
+	    for (int m=0; m<M; m++) {
+	         for (int n=0; n<N; n++) {
+	            cin>>P[m][n];
+	        }
+	    }
+	    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	    int i=0;
+	    int ans[N];
+	    int index[M];
+	    int _index[M][N];
+	    int tmp5;
+	    while (i<M) {
+	        for (int m=0; m<M; m++) {
+	            index[m] = 0;
+	        }
+	        //~~~~~~~~~~~~~~~~~~~~~
+	        for (int n=0; n<N; n++) {
+	            int tmp = S[n][i];
+	            //放第n個學生喜歡的第i個教授
+	            if (P[tmp][0] == -1 || S[n][0] == -1) {
+	                continue;
+	            }
+	            //把找相同教授的學生放一起 （tmp = 教授, index[tmp] = 喜歡教授的人數
+	            _index[tmp][index[tmp]++] = n;
+	        }
+	        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	        for (int k=0; k<N; k++) {
+	            //第k個學生喜歡的第i個教授
+	            int tmp2 = S[k][i];
+	            //如果學生找的教授已經有人找了他就等待下一輪再找
+	            //如果學生已經找到教授了就不用再找了
+	            if (P[tmp2][0] == -1 || S[k][0] == -1) {
+	                continue;
+	            }
+	            
+	            //如果有兩個以上的學生喜歡同一個教授，就找教授最喜歡的學生
+	            tmp5 = 10000;
+	            for (int a=0; a<index[tmp2]; a++) {
+	                for (int j=0; j<N; j++) {
+	                    //教授喜歡的第j個學生（tmp3=學生
+	                    int tmp3 = P[tmp2][j];
+	                    //tmp2=教授 a=學生
+	                    if (_index[tmp2][a]==tmp3) {
+	                        //找教授最喜歡的學生
+	                        if (tmp5>j) {
+	                            tmp5 = j;
+	                        }
+	                    }
+	                }
+	            }
+	            if(tmp5 != 10000){
+	            	int tmp4 = P[tmp2][tmp5];
+	            ans[tmp4] = tmp2;
+	            S[tmp4][0] = -1;
+	            P[tmp2][0] = -1;	
+				}
+	        }
+	        i++;
+	    }
+	    for (int k=0; k<N; k++) {
+	        cout<<ans[k]<<" ";
+	    }
+	    cout<<endl;
+	}
+   
+}
