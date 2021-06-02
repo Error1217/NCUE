@@ -1,0 +1,68 @@
+#include <iostream>
+#include <string.h>
+#include <math.h>
+
+using namespace std;
+
+
+int main(int argc, const char * argv[]) {
+    string _max;
+    string _min;
+    int u_size, d_size;
+    int star;
+    while (cin>>_max>>_min>>star) {
+        star = star + char('A')-1 ;
+        if (_min.size()>_max.size()) {
+            swap(_min, _max);
+        }
+        u_size = int(_max.size());
+        d_size = int(_min.size());
+        int Dis[u_size+1][d_size+1];
+        int count[u_size+1][d_size+1];
+        for (int i=0; i<=u_size; i++) {
+            for (int j=0; j<=d_size; j++) {
+                Dis[i][j] = 0;
+                count[i][j] = 1;
+            }
+        }
+//        Dis[1][0] = abs(_max[0]-star);
+//        Dis[1][1] = abs(_max[0]-_min[0]);
+//        count[1][0] = 1;
+//        count[1][1] = 1;
+        for (int i=0; i<=u_size; i++) {
+            for (int j=0; j<=i; j++) {
+                if (j>d_size) {
+                    break;
+                }
+                if (i==j) {
+                    Dis[i][j] = 0;
+                    for (int k=1; k<=i; k++) {
+                        Dis[i][j] += abs(_max[k-1]-_min[k-1]);
+                    }
+                }
+                else {
+                    if (j!=0){
+                        Dis[i][j] = max(Dis[i-1][j-1]+abs(_max[i-1]-_min[j-1]), Dis[i-1][j]+abs(_max[i-1]-star));
+                        if (Dis[i-1][j-1]+abs(_max[i-1]-_min[j-1])<Dis[i-1][j]+abs(_max[i-1]-star)){
+                            count[i][j] = count[i-1][j];
+                        }
+                        else if (Dis[i-1][j-1]+abs(_max[i-1]-_min[j-1])>Dis[i-1][j]+abs(_max[i-1]-star)){
+                            count[i][j] = count[i-1][j-1];
+                        }
+                        else{
+                            count[i][j] = count[i-1][j-1] + count[i-1][j];
+                        }
+                    }
+                    else{
+                        Dis[i][j] = Dis[i-1][j] + abs(_max[i-1]-star);
+                    }
+                    
+                }
+
+            }
+        }
+
+        cout<<Dis[u_size][d_size]<<" "<<count[u_size][d_size]<<endl;
+    }
+    return 0;
+}
