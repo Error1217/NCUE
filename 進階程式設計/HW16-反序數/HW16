@@ -1,0 +1,59 @@
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, const char * argv[]) {
+    int arr[10000];
+    int MAX;
+    int n;
+    cin>>n;
+    for (int k=0; k<n; k++) {
+        MAX = 0;
+        for (int i=0; i<10000; i++) {
+            cin>>arr[i];
+            MAX++;
+            char ch = getchar();
+            if (ch=='\n') {
+                break;
+            }
+        }
+        int left=0, right=0, index=0;
+        int count = 0, tmp[10000], tmp_count=0, index_arr[10000];
+        tmp[0] = 0;
+        while (index<MAX) {
+            left = index;
+            right = index;
+            while (left>=0) {
+                if (arr[left--]>arr[index]) {
+                    count++;
+                }
+            }
+            while (right<MAX) {
+                if (arr[right++]<arr[index]) {
+                    count++;
+                }
+            }
+            if (tmp[tmp_count-1]<=count) {
+                tmp[tmp_count] = count;
+                index_arr[tmp_count++] = index;
+            }
+            index++;
+            count=0;
+        }
+        for (int i=0; i<tmp_count; i++) {
+            if (tmp[i]>=tmp[tmp_count-1]) {
+                if (i==tmp_count-1) {
+                    cout<<arr[index_arr[i]]<<" ";
+                }
+                else{
+                    cout<<arr[index_arr[i]]<<", ";
+                }
+                
+                
+            }
+        }
+        cout<<tmp[tmp_count-1]<<endl;
+    }
+    
+    return 0;
+}
