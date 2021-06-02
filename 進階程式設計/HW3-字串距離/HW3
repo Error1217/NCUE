@@ -1,0 +1,30 @@
+#include <iostream>
+#include<string>
+#include<math.h>
+#include<memory.h>
+
+using namespace std;
+
+int main()
+{
+	string s1, s2;
+	int n;
+	cin>>n;
+	int dis1[n];
+	for(int i=1;i<n+1;i++)
+	{
+		dis1[i] = 0;
+	}
+	for(int j=1;j<n+1;j++)
+	{
+		cin>>s1>>s2;
+		for(int i=0;i<s1.size();i++)
+		{
+			dis1[j] += abs(s2[i]-s1[i]);
+		}	
+	}
+	for(int i=1;i<n+1;i++)
+	{
+		cout<<dis1[i]<<endl;
+	}
+}
