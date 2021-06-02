@@ -1,0 +1,79 @@
+#include<iostream> 
+#include <algorithm>
+
+using namespace std;
+
+typedef struct _rec{
+	int w;
+	int l;
+	int a;
+}Rec;
+
+bool sortB(Rec a, Rec b)
+{
+	return a.a < b.a;
+}
+
+int main()
+{
+	Rec rec[30000];	
+	long num1,wl,count,c,o;
+	long num2;
+	while(cin>>num1)
+	{
+		for(int cc=0;cc<num1;cc++)
+		{
+			cin>>num2;
+			count=0,o=0,c=0;
+			for(int col=0;col<num2*2;col++)
+			{
+				cin>>wl;
+				if(col%2==0)
+					rec[count].w = wl;
+				else
+				{
+					rec[count].l = wl;
+					rec[count].a = rec[count].w*rec[count].l;
+					if(rec[count].l<rec[count].w)
+						swap(rec[count].l, rec[count].w);
+					
+					count++;
+				}
+			}
+			sort(rec, rec+num2, sortB);	
+			int templ, tempw;	
+			for(int col=1;col<num2;col++) 	
+			{
+				c=1;
+				templ = rec[col].l;
+				tempw = rec[col].w;
+				for(int a=col-1;a>=0;a--)
+				{	
+					if(templ>=rec[a].l&&tempw>=rec[a].w)
+					{
+						templ = rec[a].l;
+						tempw = rec[a].w;
+						c++;
+					}
+				}
+					
+				if(o<c)
+					o = c;
+			}
+				cout<<o<<endl;
+		}
+	}
+	
+}
+
+//1
+//5 1000 2 1 1000 3 1000 5 200 3 4
+
+
+
+
+
+
+
+
+
