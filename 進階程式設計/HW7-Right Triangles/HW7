@@ -1,0 +1,34 @@
+#include<iostream> 
+#include<math.h>
+
+using namespace std;
+
+int main()
+{
+	double x,y,temp1,temp2,temp3,temp4,c;
+	int count=0;
+	while(cin>>x>>y)
+	{
+		c=pow(y,2);
+		for(int i=x;i<=y-2;i++)
+		{
+			for(int j=i+1;j<=y;j++)
+			{
+				temp1 = pow(i,2);
+				temp2 = pow(j,2);
+				temp3=temp1+temp2;
+				if(temp3>c)
+					break;
+				temp4 = sqrt(temp3);
+				if(temp4-int(temp4)==0)
+					count++;
+			}
+		}
+		cout<<count<<endl;
+		count = 0;
+	}
+	
+	
+	
+	
+}
