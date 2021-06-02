@@ -1,0 +1,38 @@
+#include<iostream> 
+#include<string.h>
+#include<cstdlib>
+
+using namespace std;
+
+
+int main()
+{
+	string num[3];
+	string value;
+	string a, b, c, d, e, f;
+	while(cin>>num[0]>>num[1]>>num[2])
+	{
+		a = num[0]+num[1]+num[2];
+		b = num[0]+num[2]+num[1];
+		c = num[1]+num[0]+num[2];
+		d = num[1]+num[2]+num[0];
+		e = num[2]+num[0]+num[1];
+		f = num[2]+num[1]+num[0];
+		if(a<b)
+			value = b;
+		else
+			value = a;
+		if(value < c)
+			value = c;
+		if(value < d)
+			value = d;
+		if(value <e)
+			value = e;
+		if(value < f)
+			value = f;
+		
+		cout<<value<<endl;	
+	}
+	
+	
+}
