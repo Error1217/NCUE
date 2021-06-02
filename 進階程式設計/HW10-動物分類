@@ -1,0 +1,111 @@
+#include<iostream>
+#include<string.h>
+#include<map>
+
+using namespace std;
+
+class M{
+	private:
+		string name;
+		int number;
+		string location;
+	public:
+		M();
+		void setName(string name);
+		string getName();
+		void setNumber(int num);
+		int getNumber();
+		void setLocation(string loc);
+		string getLocation();
+};
+
+M::M(){
+	this->name = "";
+	this->number = 0;
+	this->location = "";
+}
+
+void M::setName(string name){
+	this->name = name;
+}
+string M::getName(){
+	return this->name;
+}
+void M::setNumber(int num){
+	this->number = num;
+}
+int M::getNumber(){
+	return this->number;
+}
+void M::setLocation(string loc){
+	this->location = loc;
+}
+string M::getLocation(){
+	return this->location;
+}
+
+
+
+int main()
+{
+	M m[1000];
+	int N;
+	cin>>N;
+	string name,loc;
+	int number;
+	for(int n=0;n<N;n++)
+	{	
+		cin>>name>>number>>loc;
+		m[n].setName(name);
+		m[n].setNumber(number);
+		m[n].setLocation(loc);
+	}
+	
+	int num;
+	for(int i=0;i<N;i++)
+	{
+		if(m[i].getLocation()==" ")
+			continue;
+		num = m[i].getNumber();
+		for(int j=i+1;j<N;j++)
+		{
+			if(m[j].getLocation()==" ")
+				continue;
+			if(m[i].getLocation()==m[j].getLocation())
+			{
+				if(m[i].getName()==m[j].getName())
+				{
+					num+=m[j].getNumber();
+					m[j].setName(" ");
+					m[j].setNumber(0);
+					m[j].setLocation(" ");
+				}
+			}
+			m[i].setNumber(num);
+		}
+	}
+	string s="";
+	for(int i=0;i<N;i++)
+	{
+		if(m[i].getLocation()==" ")
+			continue;
+		cout<<m[i].getLocation()<<" : "<<m[i].getName()<<" "<<m[i].getNumber();
+		for(int j=i+1;j<N;j++)
+		{
+			if(m[j].getLocation()==" ")
+				continue;
+			if(m[i].getLocation()==m[j].getLocation())
+			{
+				cout<<", "<<m[j].getName()<<" "<<m[j].getNumber();
+				m[j].setLocation(" ");
+				m[j].setName(" ");
+				m[j].setNumber(0);
+			}
+		}
+		cout<<endl;
+	}
+	
+	
+	
+	
+}
