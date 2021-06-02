@@ -1,0 +1,101 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+struct Sub{
+    string str;
+    char c;
+};
+
+
+
+int main(int argc, const char * argv[]) {
+    
+    int s_len=0;
+    string w = "", w1 = "";
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    cin>>w;
+//    int w_size = int (w.size());
+    int n_len = 0, star_len = 0;
+    Sub s[1000];
+    for (int i=0; i<w.size(); i++) {
+		if (w[i]=='*' || w[i]=='n') {
+			s[s_len].str = w1;
+            s[s_len].c = w[i];
+            
+            if (s[s_len].c == '*') {
+	            star_len += s[s_len++].str.size();
+	        }else{ //s[i].c == 'n'
+	            n_len += s[s_len++].str.size();
+	        }
+	        w1.clear();
+            continue;
+        }else if(w[i]=='(' || w[i]==')'){
+            continue;
+        }
+        w1 += w[i];
+        
+    }
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    
+    string cmp;
+    string ans;
+    int num;
+//    int cmp_size;
+    bool isAns;
+    int n_count, star_count;  
+    cin>>num;
+    while (num--) {
+        cin>>cmp;
+//        cmp_size = int(cmp.size());
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        isAns = false;
+
+        int temp = cmp.size() - n_len;
+        for (int q=1;temp>=0;q++) {
+            ans.clear();
+            if ((cmp.size() - n_len * q) % star_len == 0) {
+                n_count = q;
+                star_count = (cmp.size() - n_len * q) / star_len;
+            }else{
+                temp = cmp.size() - n_len * (q + 1);
+                continue;
+            }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//cout<<"n_count: "<<n_count<<"  ";
+//cout<<"star_count: "<<star_count<<endl;
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            for (int i=0; i<s_len; i++) {
+                if(s[i].c == 'n'){
+                    for (int j=0; j<n_count; j++) {
+                        ans+=s[i].str;
+                    }
+                }else{ //s[i].c == '*'
+                    for (int j=0; j<star_count; j++) {
+                        ans+=s[i].str;
+                    }
+                }
+
+            }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//cout<<ans<<endl;
+            if (ans==cmp) {
+                cout<<"Y"<<" "<<n_count<<" "<<star_count<<endl;
+                isAns = true;
+                break;
+            }
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        if (!isAns) {
+            cout<<"N"<<endl;
+        }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    }
+        
+        
+//	for (int i=0; i<s_len; i++) {
+//	    cout<<s[i].str<<" "<<s[i].c<<endl;
+//	}
+}
