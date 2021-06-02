@@ -1,0 +1,116 @@
+#include<iostream> 
+
+using namespace std;
+
+int main()
+{
+	int r, c, d=0, f=0;
+
+	int matrix[1000][20];
+	bool ca[1000][20];
+	
+	cin>>r>>c;
+	for(int row=0;row<r;row++)
+	{
+		for(int col=0;col<c;col++)
+		{
+			ca[row][col] = false;
+			cin>>matrix[row][col];
+			
+		}
+	}
+			
+			
+	for(int row=0;row<r;row++)
+	{
+		for(int col=0;col<c;col++)	
+		{
+			if(matrix[row][col]==5||matrix[row][col]==-1)
+			{
+				if(matrix[row-1][col-1]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row-1][col-1]=-1;
+				}
+					
+				if(matrix[row-1][col]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row-1][col]=-1;
+				}
+				
+				if(matrix[row][col-1]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row][col-1]=-1;
+				}	
+				if(matrix[row+1][col+1]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row+1][col+1]=-1;
+				}
+				if(matrix[row+1][col-1]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row+1][col-1]=-1;
+				}	
+				if(matrix[row-1][col+1]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row-1][col+1]=-1;
+				}
+					
+				if(matrix[row+1][col]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row+1][col]=-1;
+				}
+				
+				if(matrix[row][col+1]==5)
+				{
+					matrix[row][col]=-1;
+					matrix[row][col+1]=-1;
+				}	
+			}
+		}
+	
+	}
+
+
+	for(int row=0;row<r;row++)
+	{
+		for(int col=0;col<c;col++)
+		{
+			if(matrix[row][col]==5)
+			{
+				if(row-1>=0&&col-1>=0) ca[row-1][col-1]=true;	
+						
+				if(row-1>=0) ca[row-1][col]=true;
+					
+				if(col-1>=0) ca[row][col-1]=true;
+					
+				if(col+1<c&&row+1<r) ca[row+1][col+1]=true;
+					
+				if(row+1<r&&col-1>=0) ca[row+1][col-1]=true;
+					
+				if(row-1>=0&&col+1<c) ca[row-1][col+1]=true;
+					
+				if(row+1<r) ca[row+1][col]=true;
+					
+				if(col+1<c) ca[row][col+1]=true;
+					
+			}
+		}
+	}
+	
+		
+	for(int row=0;row<r;row++)
+		for(int col=0;col<c;col++)
+			if(matrix[row][col]==1&&ca[row][col]==true)
+				f++;
+			else if(matrix[row][col]==1&&ca[row][col]==false)
+				d++;
+
+	cout<<f<<" "<<d<<endl;
+	
+}
