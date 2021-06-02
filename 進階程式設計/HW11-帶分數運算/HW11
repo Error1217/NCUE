@@ -1,0 +1,56 @@
+#include<iostream>
+#include<algorithm>
+#include<string>
+
+using namespace std;
+
+typedef struct A{
+	long l, d, u;
+};
+
+int kk(long l, int u, int d){
+	if(l==0) return u;
+	else return d*l+u;
+}
+
+
+
+int main(){
+	A a, b, tmp;
+	string x;
+	long t,tt,q;
+	while(cin>>a.l>>a.u>>a.d>>x>>b.l>>b.u>>b.d)
+	{
+		a.u = kk(a.l, a.u, a.d);
+		b.u = kk(b.l, b.u, b.d);
+		if(x=="*"){
+			tmp.u = a.u*b.u;
+			tmp.d = a.d*b.d;
+		}
+		else if(x=="/"){
+			tmp.u = a.u*b.d;
+			tmp.d = a.d*b.u;
+		}
+		else if(x=="+"){
+			tmp.u = a.u*b.d+b.u*a.d;
+			tmp.d = a.d*b.d;
+		}
+		else if(x=="-"){
+			tmp.u = a.u*b.d-b.u*a.d;
+			tmp.d = a.d*b.d;
+		}
+		t = __gcd(tmp.u, tmp.d);		
+		tmp.l = tmp.u/tmp.d;
+		tmp.u = tmp.u%tmp.d;
+		tmp.u = tmp.u/t;
+		tmp.d = tmp.d/t;
+		if(tmp.u==0){
+			cout<<tmp.l<<" "<<endl;
+		}
+		else{
+			cout<<tmp.l<<" "<<tmp.u<<" "<<tmp.d<<endl;
+		}
+		
+			
+	}
+}
