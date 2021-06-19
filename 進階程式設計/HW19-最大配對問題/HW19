@@ -1,0 +1,116 @@
+#include <iostream>
+#include <string.h>
+
+using namespace std;
+
+#define SIZE 21
+
+int M, F;
+int Mm[SIZE];
+int Fp[SIZE][SIZE];
+int Mp[SIZE][SIZE];
+int p[SIZE];
+int pp[SIZE][SIZE];
+bool u[SIZE];
+
+
+
+bool match(int i)
+{
+    for (int f = 1; f <= F; ++f)
+        if (pp[f][i] && !u[f]) //����B���X��
+        {
+            u[f] = true;                 //�O�����A���X�ݹL
+            if (p[f] == 0 || match(p[f])) //�p�G�ȵL�ǰt�A�Ϊ̭�Ӥǰt�����������i�H���s���ǰt
+            {
+                p[f] = i;    //���e���������������e�k���������s�ǰt
+                return true;
+            }
+        }
+    return false; //�`�������A�������ǰt�A��^�ǰt����
+}
+int Hungarian()
+{
+    int c = 0;
+    memset(p, 0, sizeof(p)); //���m����
+    for (int m = 1; m <= M; ++m)
+    {
+        memset(u, 0, sizeof(u)); //���mvis�Ʋ�
+        if (match(m))
+            c++;
+    }
+    return c;
+}
+
+int main() {
+    int n = 0;
+    cin>>n;
+    while(n--){
+    	bool end = true;
+    	int tmp2 = 0;
+
+        memset(Mm, 0, sizeof(Mm));
+        memset(u, 0, sizeof(u));
+        
+        cin>>M>>F;
+        
+        for (int m=1; m<=M; m++) {
+            cin>>Mm[m];
+        }
+        for (int m=1; m<=M; m++) {
+            int tmp = Mm[m];
+            end = false;
+            for (int f=1; f<=F; f++) {
+                tmp2 = 0;
+                if (tmp != 1) {
+                    tmp2 = tmp % 2;
+                    tmp = tmp / 2;
+                }else{
+                    if (tmp == 1 && !end) {
+                        tmp2 = 1;
+                        end = true;
+                    }else{
+                        tmp2 = 0;
+                    }
+                }
+                Mp[f][m] = tmp2;
+            }
+        }
+        for (int f=1; f<=F; f++) {
+            cin>>Mm[f];
+        }
+        for (int f=1; f<=F; f++) {
+            int tmp = Mm[f];
+            end = false;
+            for (int m=1; m<=M; m++) {
+                tmp2 = 0;
+                if (tmp != 1) {
+                    tmp2 = tmp % 2;
+                    tmp = tmp / 2;
+                }else{
+                    if (tmp == 1 && !end) {
+                        tmp2 = 1;
+                        end = true;
+                    }else{
+                        tmp2 = 0;
+                    }
+                }
+                Fp[f][m] = tmp2;
+            }
+        }
+        
+        for (int f=1; f<=F; f++) {
+            for (int m=1; m<=M; m++) {
+                if (Fp[f][m] == 1 && Mp[f][m] == 1) {
+                    pp[f][m] = 1;
+                } else {
+                	pp[f][m] = 0;
+				}
+            }
+        }
+
+		int c = Hungarian();
+
+        cout<<c*10000<<endl;   
+    }
+}
