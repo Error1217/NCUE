@@ -1,0 +1,150 @@
+#include <iostream>
+using namespace std;
+
+#define SIZE 100
+#define INF 1000000000
+
+int p, N;
+int matrix[100][100];
+
+int LB[SIZE], LG[SIZE];
+int match_B[SIZE], match_G[SIZE];
+bool visited_B[SIZE], visited_G[SIZE];
+
+bool DFS(int b) {
+	 visited_B[b] = true;
+	 for (int g = 0; g < N; g++)
+		 if (!visited_G[g]) {
+			 if (LB[b] + LG[g] == matrix[b][g]) {
+				 visited_G[g] = true;
+				 if (match_G[g] == -1 || DFS(match_G[g])) {
+				 match_B[b] = g; match_G[g] = b;
+				 return true;
+				 }
+			 }
+		 }
+	 return false;
+}
+
+int func() {
+	
+	int solution = 0;
+	
+	for (int b = 0; b < N; ++ b) { 
+		LG[b] = 0; 
+	} /*�@�}�l�k�ͪ��t��ȬO 0 */
+	
+	for (int b = 0; b < N; ++ b) {
+		for (int g = 0; g < N; g++) {
+			if (matrix[b][g] != INF) {
+				 LB[b] = max(LB[b], matrix[b][g]);
+				/*�@�}�l�k�ͪ��t��ȬO�C�@�C���̤j�� */
+			}
+		}
+	}
+	
+	for (int b = 0; b < N; b++) {
+		match_B[b] = -1; /*�@�}�l�k�ͳ��٥��t�� */
+		match_G[b] = -1; /*�@�}�l�k�ͳ��٥��t�� */
+	}
+	
+	for (int b = 0; b < N; b++) {
+		while (true) {
+			for (int i = 0; i < N; ++ i) {
+				visited_B[i] = false;
+				visited_G[i] = false;
+			}
+		
+			if (DFS(b)) {
+			 	break; /* �{���q�B�z���k�ͥi�H���̨Ω��� */
+			}
+		
+			int difference = INF;
+		
+		for (int b = 0; b < N; b++) {
+			if (visited_B[b]) {
+				for (int g = 0; g < N; ++ g) {
+					if (!visited_G[g]) {
+						 if (matrix[b][g] != INF) {
+							difference = min(difference, LB[b] + LG[g] - matrix[b][g]);
+						}
+					}
+				}
+			}
+		}
+			 /* ��b�o�@���Ҧ��������k�ͤ��i�H�Q�խ��̤֪��v���� */
+			if (difference == INF) {
+			 	return -INF;
+			}
+			
+			for (int b = 0; b < N; b++) {
+				if (visited_B[b]) {
+					LB[b] -= difference;
+				}
+			} /* �N�o�@���Ҧ����Q���b�쪺�k���v�حȴ�h difference */
+			
+			for (int g = 0; g < N; g++){
+				if (visited_G[g]) {
+					LG[g] += difference;
+				} /* �N�o�@���Ҧ����Q���b�쪺�k���v�حȥ[�W difference */
+			}
+		}
+	}
+	
+	for (int b = 0; b < N; b++) {
+		solution += matrix[b][match_B[b]];
+	}
+	
+	return solution;
+}
+
+
+
+
+int main(int argc, const char * argv[]) {
+    
+    cin>>p;
+    
+    while(p--){
+        cin>>N;
+        for (int M=0; M<N; M++) {
+            for (int F=0; F<N; F++) {
+                cin>>matrix[M][F];
+            }
+        }
+        //
+        int M_MAx_index = 0;
+        int M_MAX_value = 0;
+        for (int M=0; M<N; M++) {
+            for (int F=0; F<N; F++) {
+                if (matrix[M][F] > matrix[M][M_MAx_index]) {
+                    M_MAx_index = F;
+                }
+            }
+            M_MAX_value += matrix[M][M_MAx_index];
+        }
+        //
+        int F_MAx_index = 0;
+        int F_MAX_value = 0;
+        for (int F=0; F<N; F++) {
+            for (int M=0; M<N; M++) {
+                if (matrix[M][F] > matrix[F_MAx_index][F]) {
+                    F_MAx_index = M;
+                }
+            }
+            F_MAX_value += matrix[F_MAx_index][F];
+        }
+        
+        
+        
+        //
+        int c = func();
+
+        
+        cout<<M_MAX_value<<" "<<F_MAX_value<<" "<<c<<endl;
+        
+    }
+    
+   
+    return 0;
+}
