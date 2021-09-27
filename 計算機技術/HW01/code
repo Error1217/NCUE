@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, const char * argv[]) {
+    printf("Please input your name.... ");
+    char name[11];
+    scanf("%s", name);
+    
+    printf("Please select your department.... <a:資工 b:電機 c:電子> ");
+    char select[2];
+    scanf("%s", select);
+    
+    printf("Please input your score on test 1.... ");
+    int score1;
+    scanf("%d", &score1);
+    
+    printf("Please input your score on test 2.... ");
+    int score2;
+    scanf("%d", &score2);
+    
+    float average = ((float)score1 + score2)/2;
+    printf("|-------------------------------------------|\n");
+    printf("|   Name   |Department|Test 1|Test 2|Average|\n");
+    printf("|----------+----------+------+------+-------|\n");
+    printf("|%-10s|%-10s|%6d|%6d|%7.2f|\n", name, select, score1, score2, average);
+    printf("|-------------------------------------------|\n");
+    system("pause");
+    return 0;
+}
